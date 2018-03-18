@@ -69,7 +69,7 @@ class Game
     str.length != 2 || /[^1-8]/.match(str[1].downcase) || /[^a-h]/.match(str[0])
   end
   
-  def move(player, source_str, dest_str, check = false)
+  def move(player, source_str, dest_str)
     source_pos = xy_converter(source_str)
     dest_pos = xy_converter(dest_str)
     source_tile = board.get_tile(source_pos)
@@ -94,10 +94,8 @@ class Game
         piece = source_tile.data = player.promote_pawn
       end
     end
-    
-    if check
-      false
-    elsif castling?(piece, movement, times)
+
+    if castling?(piece, movement, times)
       castle_action(piece, source_tile, dest_tile, movement)
     else
       backup = @board.dup
@@ -105,12 +103,6 @@ class Game
       self.capture(dest_tile)
       source_tile.swap_with(dest_tile)
       dest_tile.update_pos
-
-      if check?(player, other(player))
-        @board = backup
-        source_tile.update_pos
-        return "--cannot place self in check"
-      end
       
       piece.has_moved
       Action.new(piece, source_str, dest_str, target)
@@ -210,18 +202,6 @@ class Game
     else
        :invalid
     end    
-  end
-
-  def check?(p1, p2)
-    king_pos = p1.king.pos
-    check_arr?(p1, p2.front_row, king_pos) || check_arr?(p1, p2.back_row, king_pos)
-  end
-  
-  def check_arr?(p1, arr, king_pos)
-    arr.each do |piece|
-      return true if move(p1, piece.pos, king_pos, true) == false
-    end
-    false
   end
   
   def to_s
