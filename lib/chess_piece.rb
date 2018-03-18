@@ -2,8 +2,7 @@ class ChessPiece
 
   attr_reader :color, :pic, :starting_pos, :type
   attr_accessor :pos
-  def initialize(type, color)
-    @type = type
+  def initialize(color)
     @color = color
     @starting_pos = true
   end
@@ -20,8 +19,9 @@ end
 
 class King < ChessPiece
 
-  def initialize(type, color)
+  def initialize(color)
     super
+    @type
     @pic = [" \u{2654} ", " \u{265A} "]
   end
 
@@ -37,7 +37,7 @@ end
 
 class Queen < ChessPiece
 
-  def initialize(type, color)
+  def initialize(color)
     super
     @type = :queen
     @pic = [" \u{2655} ", " \u{265B} "]
@@ -53,7 +53,7 @@ end
 
 class Knight < ChessPiece
 
-  def initialize(type, color)
+  def initialize(color)
     super
     @type = :knight
     @pic =  [" \u{2658} ", " \u{265E} "]
@@ -67,7 +67,7 @@ end
 
 class Rook < ChessPiece
 
-  def initialize(type, color)
+  def initialize(color)
     super
     @type = :rook
     @pic =  [" \u{2656} ", " \u{265C} "]
@@ -81,7 +81,7 @@ end
 
 class Bishop < ChessPiece
 
-  def initialize(type, color)
+  def initialize(color)
     super
     @type = :bishop
     @pic =  [" \u{2657} ", " \u{265D} "]
@@ -95,7 +95,7 @@ end
 
 class Pawn < ChessPiece
   
-  def initialize(type, color)
+  def initialize(color)
     super
     @type = :pawn
     @pic = [" \u{2659} ", " \u{265F} "]

@@ -11,17 +11,17 @@ class Player
   end
 
   def generate_lineup
-    @king = King.new(:king, @color)
+    @king = King.new(color)
     @front_row = Array.new
-    8.times { @front_row << Pawn.new(:pawn, @color) }
-    @back_row = [Rook.new(:rook, @color),
-                 Knight.new(:knight, @color),
-                 Bishop.new(:bishop, @color),
-                 Queen.new(:queen, @color),
+    8.times { @front_row << Pawn.new(color) }
+    @back_row = [Rook.new(color),
+                 Knight.new(color),
+                 Bishop.new(color),
+                 Queen.new(color),
                  king,
-                 Bishop.new(:bishop, @color),
-                 Knight.new(:knight, @color),
-                 Rook.new(:rook, @color)
+                 Bishop.new(color),
+                 Knight.new(color),
+                 Rook.new(color)
                 ]
   end
 
