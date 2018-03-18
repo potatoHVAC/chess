@@ -1,28 +1,11 @@
 class ChessPiece
 
-  attr_reader :type, :color, :pic, :starting_pos
+  attr_reader :color, :pic, :starting_pos, :type
   attr_accessor :pos
   def initialize(type, color)
     @type = type
     @color = color
-
-    case type
-    when :king
-      @pic = [" \u{2654} ", " \u{265A} "]
-      @starting_pos = true
-    when :queen
-      @pic = [" \u{2655} ", " \u{265B} "]
-    when :knight
-      @pic =  [" \u{2658} ", " \u{265E} "]
-    when :rook
-      @pic =  [" \u{2656} ", " \u{265C} "]
-      @starting_pos = true
-    when :bishop
-      @pic =  [" \u{2657} ", " \u{265D} "]
-    when :pawn
-      @pic = [" \u{2659} ", " \u{265F} "]
-      @starting_pos = true
-    end
+    @starting_pos = true
   end
 
   def invalid_move?(movement, times)
@@ -81,3 +64,51 @@ class ChessPiece
   end
 end
 
+class King < ChessPiece
+
+  def initialize(type, color)
+    super
+    @pic = [" \u{2654} ", " \u{265A} "]
+  end
+end
+
+class Queen < ChessPiece
+
+  def initialize(type, color)
+    super
+    @pic = [" \u{2655} ", " \u{265B} "]
+  end
+end
+
+class Knight < ChessPiece
+
+  def initialize(type, color)
+    super
+    @pic =  [" \u{2658} ", " \u{265E} "]
+  end
+end
+
+class Rook < ChessPiece
+
+  def initialize(type, color)
+    super
+    @pic =  [" \u{2656} ", " \u{265C} "]
+  end
+end
+
+class Bishop < ChessPiece
+
+  def initialize(type, color)
+    super
+    @pic =  [" \u{2657} ", " \u{265D} "]
+  end
+end
+
+class Pawn < ChessPiece
+  
+  def initialize(type, color)
+    super
+    @pic = [" \u{2659} ", " \u{265F} "]
+  end
+end
+ 
