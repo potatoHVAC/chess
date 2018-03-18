@@ -14,6 +14,7 @@ def test1
   test1.move(test1.players[1], 'd8', 'h4')
   test1.move(test1.players[0], 'b2', 'a3')
   test1.move(test1.players[0], 'h2', 'h3')
+  puts test1.move(test1.players[1], 'h4', 'g6')
   puts test1
 end
 
@@ -50,4 +51,4 @@ def test4
   puts test4
 end
 
-test2
+test1

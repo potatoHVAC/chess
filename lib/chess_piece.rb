@@ -8,35 +8,100 @@ class ChessPiece
     @starting_pos = true
   end
 
-  def invalid_move?(movement, times)
-    send('invalid_' + type.to_s + '?', movement, times)
+  def has_moved
+    @starting_pos = false
+  end
+  
+  def to_s
+    @pic
+  end
+end
+
+
+class King < ChessPiece
+
+  def initialize(type, color)
+    super
+    @pic = [" \u{2654} ", " \u{265A} "]
   end
 
-  def invalid_king?(movement, times)
+  def invalid_move?(movement, times)
     if @starting_pos && [:E, :W].include?(movement) && times == 2
       false
     else
       times != 1
     end
   end
+end
 
-  def invalid_queen?(movement, times)
-    invalid_rook?(movement, times) and invalid_bishop?(movement, times)
+
+class Queen < ChessPiece
+
+  def initialize(type, color)
+    super
+    @type = :queen
+    @pic = [" \u{2655} ", " \u{265B} "]
   end
 
-  def invalid_knight?(movement, times)
+  def invalid_move?(movement, times)
+    rook_path = [:N, :S, :E, :W].include?(movement) 
+    bishob_path = [:NE, :NW, :SE, :SW].include?(movement)
+    false #rook_path and bishob_path
+  end
+end
+
+
+class Knight < ChessPiece
+
+  def initialize(type, color)
+    super
+    @type = :knight
+    @pic =  [" \u{2658} ", " \u{265E} "]
+  end
+
+  def invalid_move?(movement, times)
     movement != :L
   end
+end
 
-  def invalid_rook?(movement, times)
+
+class Rook < ChessPiece
+
+  def initialize(type, color)
+    super
+    @type = :rook
+    @pic =  [" \u{2656} ", " \u{265C} "]
+  end
+
+  def invalid_move?(movement, times)
     [:N, :S, :E, :W].include?(movement) == false
   end
+end
 
-  def invalid_bishop?(movement, times)
+
+class Bishop < ChessPiece
+
+  def initialize(type, color)
+    super
+    @type = :bishop
+    @pic =  [" \u{2657} ", " \u{265D} "]
+  end
+  
+  def invalid_move?(movement, times)
     [:NE, :NW, :SE, :SW].include?(movement) == false
   end
+end
 
-  def invalid_pawn?(movement, times)
+
+class Pawn < ChessPiece
+  
+  def initialize(type, color)
+    super
+    @type = :pawn
+    @pic = [" \u{2659} ", " \u{265F} "]
+  end
+
+  def invalid_move?(movement, times)
     case color
     when :white
       if [:NW, :NE, :N].include?(movement) && times == 1
@@ -53,62 +118,6 @@ class ChessPiece
     end
 
     true
-  end
-
-  def has_moved
-    @starting_pos = false
-  end
-  
-  def to_s
-    @pic
-  end
-end
-
-class King < ChessPiece
-
-  def initialize(type, color)
-    super
-    @pic = [" \u{2654} ", " \u{265A} "]
-  end
-end
-
-class Queen < ChessPiece
-
-  def initialize(type, color)
-    super
-    @pic = [" \u{2655} ", " \u{265B} "]
-  end
-end
-
-class Knight < ChessPiece
-
-  def initialize(type, color)
-    super
-    @pic =  [" \u{2658} ", " \u{265E} "]
-  end
-end
-
-class Rook < ChessPiece
-
-  def initialize(type, color)
-    super
-    @pic =  [" \u{2656} ", " \u{265C} "]
-  end
-end
-
-class Bishop < ChessPiece
-
-  def initialize(type, color)
-    super
-    @pic =  [" \u{2657} ", " \u{265D} "]
-  end
-end
-
-class Pawn < ChessPiece
-  
-  def initialize(type, color)
-    super
-    @pic = [" \u{2659} ", " \u{265F} "]
   end
 end
  
