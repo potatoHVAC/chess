@@ -76,23 +76,13 @@ class Game
     dest_tile = board.get_tile(dest_pos)
     piece = source_tile.data
     target = dest_tile.data
-    
-    return "--cannot start and end on same tile" if source_str == dest_str
-    return "--cannot capture your own piece" if dest_tile.same_color?(player.color)
-        
     movement, times = parse_dir(source_pos, dest_pos, piece)
 
-    return "--invalid movement" if movement == :invalid
-    return "--path obstructed" if source_tile.obstructed_path?(movement, times)
-    return "--invalid #{piece.type.to_s} movement" if piece.invalid_move?(movement, times)
-    if piece.type == :pawn
-      if [:N, :S].include?(movement) && source_tile.obstructed_path?(movement, times + 1)
-        return "--pawns cannot capture forwards" 
-      elsif [:NW, :NE, :SW, :SE].include?(movement) && target.nil?
-        return "--pawns can only move diagonally when capturing"
-      elsif [0, 7].include?(dest_pos[1])
-        piece = source_tile.data = player.promote_pawn
-      end
+    error_message = check_movement(player, source_pos, dest_pos, source_tile, dest_tile, piece, movement, times)
+    return error_message if error_message
+
+    if promote_pawn?(piece, dest_pos)
+      piece = source_tile.data = player.promote_pawn
     end
 
     if castling?(piece, movement, times)
@@ -108,7 +98,33 @@ class Game
       Action.new(piece, source_str, dest_str, target)
     end
   end
-      
+
+  def check_movement(player, source_pos, dest_pos, source_tile, dest_tile, piece, movement, times)
+    if source_pos == dest_pos
+      "--cannot start and end on same tile"
+    elsif dest_tile.same_color?(player.color)
+      "--cannot capture your own piece"
+    elsif movement == :invalid
+      "--invalid movement"
+    elsif source_tile.obstructed_path?(movement, times)
+      "--path obstructed"
+    elsif piece.invalid_move?(movement, times)
+      "--invalid #{piece.type.to_s} movement" 
+    elsif piece.type == :pawn
+      if [:N, :S].include?(movement) && source_tile.obstructed_path?(movement, times + 1)
+        return "--pawns cannot capture forwards" 
+      elsif [:NW, :NE, :SW, :SE].include?(movement) && dest_tile.data.nil?
+        return "--pawns can only move diagonally when capturing"
+      end
+    else
+      false
+    end
+  end
+
+  def promote_pawn?(piece, dest_pos)
+    piece.type == :pawn && [0, 7].include?(dest_pos[1])
+  end
+  
   def get_piece(pos)
     tile = board.get_tile(pos)
     tile.data.type
