@@ -21,7 +21,7 @@ class King < ChessPiece
 
   def initialize(color)
     super
-    @type
+    @type = :king
     @pic = [" \u{2654} ", " \u{265A} "]
   end
 
