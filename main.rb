@@ -50,4 +50,4 @@ def test4
   puts test4
 end
 
-test1
+test4
